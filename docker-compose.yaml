@@ -4,6 +4,11 @@ networks:
   private:
     name: réseau privé pour les services php et BDD
 
+volumes:
+  db-data:
+  www:
+
+
 services:
   bdd:
     image: mariadb:latest
