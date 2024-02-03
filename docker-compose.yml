@@ -11,21 +11,29 @@ volumes:
 
 services:
   bdd:
+    container_name: mybdd
     image: mariadb:latest
-    restart: always
     environment:
       MARIADB_ROOT_PASSWORD: C1mdp2SQL!
     volumes:
       - db-data:/var/lib/mysql
     networks:
       - private
+    expose:
+      - 3306
+
   php:
+    container_name: myphp
     image: bitnami/php-fpm:latest
     volumes:
       - www:/var/www/html
     networks:
       - private
+    expose:
+      - 8000:8000
+
   vpn:
+    container_name: myvpn
     image: olinuxserver/wireguard:latest
     networks:
       - public
