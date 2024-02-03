@@ -1,0 +1,27 @@
+networks:
+  public:
+    name: réseau publique exposé
+  private:
+    name: réseau privé pour les services php et BDD
+
+services:
+  bdd:
+    image: mariadb:latest
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: C1mdp2SQL!
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - private
+  php:
+    image: bitnami/php-fpm:latest
+    volumes:
+      - www:/var/www/html
+    networks:
+      - private
+  vpn:
+    image: olinuxserver/wireguard:latest
+    networks:
+      - public
+      - private
