@@ -30,7 +30,7 @@ services:
     networks:
       - private
     expose:
-      - 8000:8000
+      - 8000
 
   vpn:
     container_name: myvpn
