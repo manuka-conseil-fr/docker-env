@@ -12,7 +12,6 @@ volumes:
 
 services:
   bdd:
-    
     container_name: mybdd
     image: mariadb:latest
     environment:
@@ -21,7 +20,7 @@ services:
       - db-data:/var/lib/mysql
     networks:
       - private
-    expose:
+    ports:
       - 3306
 
   php:
@@ -31,12 +30,12 @@ services:
       - www:/var/www/html
     networks:
       - private
-    expose:
-      - 8000
+    ports:
+      - 8000:8000
 
-  vpn:
-    container_name: myvpn
-    image: olinuxserver/wireguard:latest
-    networks:
-      - public
-      - private
+  #vpn:
+   # container_name: myvpn
+    #image: olinuxserver/wireguard:latest
+    #networks:
+    #  - public
+    #  - private
