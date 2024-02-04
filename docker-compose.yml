@@ -41,7 +41,7 @@ services:
     ports:
       - 8000:8000
 
-  vpn:
+  wireguard:
     container_name: wireguard
     image: lscr.io/linuxserver/wireguard:latest
     cap_add:
@@ -63,7 +63,7 @@ services:
     - 5000:5000
     restart: unless-stopped
   
-  vpn-ui:
+  wireguard-ui:
     image: ngoduykhanh/wireguard-ui:latest
     container_name: Wireguard-ui
     depends_on:
