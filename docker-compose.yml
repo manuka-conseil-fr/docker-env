@@ -41,8 +41,24 @@ services:
     ports:
       - 8000:8000
 
-  #vpn:
-   # container_name: myvpn
+  vpn:
+    container_name: wireguard
+    image: lscr.io/linuxserver/wireguard:latest
+    cap_add:
+    - NET_ADMIN
+    environment:
+    - PUID=$PUID
+    - PGID=$PGID
+    - TZ=$TZ
+    - PEERS=Profile1,Profile2,OtherProfile
+    volumes:
+    - $DOCKERDIR/appdata/wireguard:/config
+    ports:
+    - 51820:51820/udp
+    sysctls:
+    - net.ipv4.conf.all.src_valid_mark=1
+    restart: unless-stopped
+    
     #image: olinuxserver/wireguard:latest
     #networks:
     #  - public
