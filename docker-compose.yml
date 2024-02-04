@@ -5,6 +5,9 @@ networks:
     name: vpn_config
   private:
     name: lan_docker
+    ipam:
+     config:
+     - subnet: "10.10.10.0/24"
 
 volumes:
   db-data:
