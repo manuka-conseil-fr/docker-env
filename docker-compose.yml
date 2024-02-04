@@ -1,4 +1,5 @@
 version: '3'
+
 networks:
   public:
     name: réseau publique exposé
@@ -9,6 +10,13 @@ volumes:
   db-data:
   www:
 
+configs:
+  php_config:
+    file: ./php.ini
+  bdd_config:
+    file: ./mariadb.conf
+  vpn_config:
+    file: ./vpn.conf
 
 services:
   bdd:
