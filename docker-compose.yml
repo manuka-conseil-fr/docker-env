@@ -2,9 +2,9 @@ version: '3'
 
 networks:
   public:
-    name: réseau publique exposé
+    name: vpn_config
   private:
-    name: réseau privé pour les services php et BDD
+    name: lan_docker
 
 volumes:
   db-data:
@@ -55,14 +55,37 @@ services:
     - TZ=$TZ
     - PEERS=Profile1,Profile2,OtherProfile
     volumes:
-    - $DOCKERDIR/appdata/wireguard:/config
+    - ./config:/config
     ports:
+    ## port du serveur Wireguard
     - 51820:51820/udp
-    sysctls:
-    - net.ipv4.conf.all.src_valid_mark=1
+    ## port de l'interface de wireguard
+    - 5000:5000
     restart: unless-stopped
-    
-    #image: olinuxserver/wireguard:latest
-    #networks:
-    #  - public
-    #  - private
+  
+  vpn-ui:
+    image: ngoduykhanh/wireguard-ui:latest
+    container_name: Wireguard-ui
+    depends_on:
+      - wireguard
+    cap_add:
+      - "NET_ADMIN"
+    network_mode: service:wireguard
+    environment:
+      - SENDGRID_API_KEY
+      - EMAIL_FROM_ADDRESS
+      - EMAIL_FROM_NAME
+      - SESSION_SECRET
+      - WGUI_USERNAME=admin
+      - WGUI_PASSWORD=password
+      - WG_CONF_TEMPLATE
+      - WGUI_MANAGE_START=true
+      - WGUI_MANAGE_RESTART=true
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: 50m
+    volumes:
+      - ./db:/app/db
+      - ./config:/etc/wireguard
