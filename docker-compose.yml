@@ -46,6 +46,9 @@ services:
     image: lscr.io/linuxserver/wireguard:latest
     cap_add:
     - NET_ADMIN
+    networks:
+      - private
+      - public
     environment:
     - PUID=$PUID
     - PGID=$PGID
