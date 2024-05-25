@@ -1,10 +1,10 @@
 version: '3'
 
 networks:
-  public:
-    name: vpn_config
+#  public:
+#    name: vpn_config
   private:
-    name: lan_docker
+    name: lan_docker1
     ipam:
      config:
      - subnet: "10.10.10.0/24"
@@ -12,6 +12,7 @@ networks:
 volumes:
   db-data:
   www:
+  config:
 
 configs:
   php_config:
@@ -20,37 +21,35 @@ configs:
     file: ./mariadb.conf
   vpn_config:
     file: ./vpn.conf
-
-services:
-  bdd:
-    container_name: mybdd
-    image: mariadb:latest
-    environment:
-      MARIADB_ROOT_PASSWORD: C1mdp2SQL!
-    volumes:
-      - db-data:/var/lib/mysql
-    networks:
-      - private
+  
+  postgres:
+    image: kartoza/postgis:14
     ports:
-      - 3306
+      - ${POSTGRES_PUBLIC_PORT:-5435}:5432
+    environment:
+      - POSTGRES_DB=${DB_DATABASE:-postgres}
+      - POSTGRES_USER=${DB_USERNAME:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-secret}
+    volumes:
+      - bd66-postgresql:/var/lib/postgresql/
+    healthcheck:
+      test: "PGPASSWORD=${DB_PASSWORD} pg_isready -h 127.0.0.1 -U ${DB_USERNAME} -d ${DB_DATABASE}"
+      retries: 3
+      timeout: 5s
 
   php:
-    container_name: myphp
-    image: bitnami/php-fpm:latest
-    volumes:
-      - www:/var/www/html
-    networks:
-      - private
-    ports:
-      - 8000:8000
-
+    container_name: toto-php
+    image: php:8.2-apache
+    depends_on:
+      - postgres
+  
   wireguard:
     container_name: wireguard
     image: lscr.io/linuxserver/wireguard:latest
     cap_add:
     - NET_ADMIN
     networks:
-      - private
+      - lan_docker1
       - public
     environment:
     - PUID=$PUID
