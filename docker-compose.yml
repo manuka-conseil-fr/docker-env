@@ -1,94 +1,79 @@
-ersion: '3'
-
-networks:
-  public:
-    name: vpn_config
-  private:
-    name: lan_docker
-    ipam:
-     config:
-     - subnet: "10.10.10.0/24"
-
-volumes:
-  db-data:
-  www:
-
-configs:
-  php_config:
-    file: ./php.ini
-  bdd_config:
-    file: ./mariadb.conf
-  vpn_config:
-    file: ./vpn.conf
+version: '3.3'
 
 services:
-  bdd:
-    container_name: mybdd
-    image: mariadb:latest
-    environment:
-      MARIADB_ROOT_PASSWORD: C1mdp2SQL!
-    volumes:
-      - db-data:/var/lib/mysql
-    networks:
-      - private
-    ports:
-      - 3306
-
-  php:
-    container_name: myphp
-    image: bitnami/php-fpm:latest
-    volumes:
-      - www:/var/www/html
-    networks:
-      - private
-    ports:
-      - 8000:8000
-
   wireguard:
-    container_name: wireguard
     image: lscr.io/linuxserver/wireguard:latest
+    container_name: wireguard
     cap_add:
-    - NET_ADMIN
-    networks:
-      - private
-      - public
+      - NET_ADMIN
+      - SYS_MODULE
     environment:
-    - PUID=$PUID
-    - PGID=$PGID
-    - TZ=$TZ
-    - PEERS=Profile1,Profile2,OtherProfile
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+      - SERVERURL=yourserverurl### ip publique du serveur 
+      - SERVERPORT=51820
+      - PEERS=client1,client2
+      - PEERDNS=auto
+      - INTERNAL_SUBNET=10.0.0.0/8
     volumes:
-    - ./config:/config
+      - ./wireguard/config:/config
+      - ./wireguard/lib/modules:/lib/modules
     ports:
-    ## port du serveur Wireguard
-    - 51820:51820/udp
-    ## port de l'interface de wireguard
-    - 5000:5000
+      - 51820:51820/udp
     restart: unless-stopped
-  
+    networks:
+      - internal
+
   wireguard-ui:
-    image: ngoduykhanh/wireguard-ui:latest
-    container_name: Wireguard-ui
+    image:  ngoduykhanh/wireguard-ui:latest
+    container_name: wireguard-ui
+    environment:
+      - WGUI_USERNAME=admin
+      - WGUI_PASSWORD=C1mdpAdm2WireGuard!
+      - WGUI_ADDRESS=0.0.0.0
+      - WGUI_PORT=5000
+    volumes:
+      - ./wireguard-ui/data:/data
+    restart: unless-stopped
     depends_on:
       - wireguard
-    cap_add:
-      - "NET_ADMIN"
-    network_mode: service:wireguard
+    networks:
+      - internal
+
+  postgres:
+    image: postgres:14
+    container_name: postgres
     environment:
-      - SENDGRID_API_KEY
-      - EMAIL_FROM_ADDRESS
-      - EMAIL_FROM_NAME
-      - SESSION_SECRET
-      - WGUI_USERNAME=admin
-      - WGUI_PASSWORD=password
-      - WG_CONF_TEMPLATE
-      - WGUI_MANAGE_START=true
-      - WGUI_MANAGE_RESTART=true
-    restart: unless-stopped
-    logging:
-      driver: json-file
-      options:
-        max-size: 50m
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
     volumes:
-      - ./db:/app/db
-      - ./config:/etc/wireguard
+      - ./postgres/data:/var/lib/postgresql/data
+    depends_on:
+      - wireguard
+    networks:
+      - internal
+
+  apache-php:
+    image: php:8.2-apache
+    container_name: apache-php
+    depends_on:
+      - postgres
+    environment:
+      - POSTGRES_DB=mydatabase
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_HOST=postgres
+    volumes:
+      - ./www:/var/www/html
+    depends_on:
+      - wireguard
+    networks:
+      - internal
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+networks:
+  internal:
+    internal: true

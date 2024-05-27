@@ -1,14 +1,17 @@
 # docker-env
-fichier docker compose composé de 3 éléments:
+fichier docker compose composé de 4 éléments:
 
 ### Partie réseau ###
     - Un réseau public permettant l'acces au container VPN
-    - UN réseau privé containant les containers PHP et MYSQL
+    - UN réseau privé permettant l'acces aux autres containers php postgresql et gui wireguard
 
+### Les containers pour le VPN ###
 
-
-Pour réaliser cela, nous devons configurer les réseaux de manière à ce que l'interface graphique de WireGuard soit uniquement accessible depuis le VPN. Voici un fichier docker-compose.yml qui configure un environnement avec trois conteneurs : un pour Apache et PHP 8.2, un pour PostgreSQL 14, et un pour WireGuard VPN avec une interface graphique. L'interface graphique de WireGuard et Apache-PHP seront accessibles uniquement via le VPN.
-
+Pour implémenter la partie vpn nous utiliserons, une image docker de Wireguard.
+ce dernier contient de paramètre à modifier:
+```SERVERURL``` => qui doit contenir soit le nom fqdn publique du serveur hôte soit l'adresse ip publique
+```PEERS``` => contient le nombre de clien à configurer
+ 
 yaml
 Copier le code
 version: '3.8'
@@ -62,6 +65,8 @@ services:
       POSTGRES_PASSWORD: mypassword
     volumes:
       - ./postgres/data:/var/lib/postgresql/data
+    depends_on:
+      - wireguard
     networks:
       - internal
 
@@ -77,6 +82,8 @@ services:
       - POSTGRES_HOST=postgres
     volumes:
       - ./www:/var/www/html
+    depends_on:
+      - wireguard  
     networks:
       - internal
     extra_hosts:
