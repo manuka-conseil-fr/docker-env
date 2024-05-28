@@ -38,6 +38,10 @@ La documentation officielle de Wireguard ci dessous explique comment effectuer l
 
 Il y a généralement deux possibilités pour charger la configuration vpn, pour celà il faudra récupérer au niveau du volume du container Wireguard le fichier de configurations correspondant au client que l'on soit configurer, par exemple le client peer_client1, dans le dossier peer_client1 qui se trouve dans le répertoire configs du container Wireguard, il y a deux fichiers :
 
-- Soit un fichier png contenant le QRCODE de la configuration ![Qrcode](extras/peer_client1.png) (recommandé pour Android et IOS)
+- Soit un fichier png contenant le QRCODE de la configuration (recommandé pour Android et IOS)
 
-- Soit un fichier de configuration à importer dans le client Wireguard [configuration](extras/peer_client1.conf) (recommandé pour linux, windows et macOS)
+![Qrcode](extras/peer_client1.png) 
+
+- Soit un fichier de configuration à importer dans le client Wireguard (recommandé pour linux, windows et macOS)
+
+ [exemple d'un fichier de configuration](extras/peer_client1.conf) 
