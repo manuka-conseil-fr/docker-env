@@ -8,11 +8,13 @@ La livraison du code contient deux docker compose:
  
 ### Principe de fonctionnement ###
 
-Le principe de fonctionnement est simple, le docker compose va creer 3 containers ayant un réseau commun appelé **wgnet**.
+Le principe de fonctionnement est simple, le docker compose va créer 3 containers ayant un réseau commun appelé **wgnet**.
 
-Ensuite lors de la creation du container de la solution VPN WIREGUARD, ce dernier disposera d'un acces publique depuis l'adresse ip du serveur hôte (cf variable **SERVERURL** à renseigner dans le docker-compose) ensuite ce dernier va créer un réseau dédié à la connexion VPN (cf variable **INTERNAL_SUBNET** dans le docker-compose)
+Ensuite lors de la creation du container de la solution VPN WIREGUARD, ce dernier disposera d'un acces publique depuis l'adresse ip du serveur hôte (cf variable **SERVERURL** à renseigner dans le docker-compose)
 
-Il y a ensuite des paramètres de configuration permettant le transfère des flux du réseau interne vpn vers le réseau wgnet des containers docker.
+Puis ce dernier va créer un réseau dédié à la connexion VPN (cf variable **INTERNAL_SUBNET** dans le docker-compose)
+
+La configuration permetra le transfère des flux du réseau dédié vpn vers le réseau dédié des containers docker.
 
 Afin de maitriser le plan ip sur le reseau des containers, il a etait décider de fixer les ips. aussi nous aurons par exemple :
 
