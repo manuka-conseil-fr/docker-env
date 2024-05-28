@@ -23,6 +23,29 @@ Afin de maitriser le plan ip sur le reseau des containers, il a etait décider d
 ### Schémas de fonctionnement ###
 
 
+[Fonctionnement de Wireguard ](extras/wireguard.png) 
+
+### Eléments important de paramêtrage du container WireGuard
+
+Ci-dessous les éléments importants à paramétrer dans le docker-compose pour la mise en place de Wireguard:
+
+-  sur la section environment:
+
+     * SERVERURL : Correspond à l'adresse ip publique où le nom fqdn du serveur hôte
+     * SERVERPORT: Port d'écoute du serveur vpn
+     * PEERS: il s'agit d'une liste des clients du vpn, celà permet la génération de leur configuration
+     * INTERNAL_SUBNET: Il s'agit du subnet réseau dédié au vpn, pour chaque clients et serveur une adresse ip sera attribuée dans ce réseau.
+     * ALLOWEDIPS: Définit les subnets autorisés via le réseau VPN
+
+- sur la section sysctls:
+
+     * net.ipv4.ip_forward : permet d'autoriser le forward de trames vers d'autres réseaux, dans notre cas pour accèder au réseau commun docker.
+     * net.ipv4.conf.all.src_valid_mark : permet de marquer comme valide les sources de traffic arrivant sur le container docker.
+
+- sur la section cap_add:
+    Cette section permet de donner des privilèges au containers docker, sur le serveur hôte.
+    * NET_ADMIN : permet de donner des droits d'opération sur des éléments de gestion du réseau, cette directive est nécessaire pour gérer les transferts de flux entre les différents réseaux utilisés
+    * SYS_MODULE: permet de gerer des modules kernels
 
 ### Connexion au vpn avec un client Wireguard ###
 
@@ -36,7 +59,9 @@ La documentation officielle de Wireguard ci dessous explique comment effectuer l
 - IOS
 - Android
 
-Il y a généralement deux possibilités pour charger la configuration vpn, pour celà il faudra récupérer au niveau du volume du container Wireguard le fichier de configurations correspondant au client que l'on soit configurer, par exemple le client peer_client1, dans le dossier peer_client1 qui se trouve dans le répertoire configs du container Wireguard, il y a deux fichiers :
+Il y a généralement deux possibilités pour charger la configuration vpn, pour celà il faudra récupérer au niveau du volume du container Wireguard le fichier de configuration correspondant au client que l'on souhaite configurer, par exemple le client peer_client1. La configuration se trouve dans le dossier peer_client1 qui se trouve dans le répertoire configs du container Wireguard.
+
+il y a deux fichiers permettant de récuperer la configuration :
 
 - Soit un fichier png contenant le QRCODE de la configuration (recommandé pour Android et IOS)
 
