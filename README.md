@@ -1,105 +1,35 @@
-# docker-env
-fichier docker compose composé de 4 éléments:
+# docker compose vpn Wireguard Datakode
 
-### Partie réseau ###
-    - Un réseau public permettant l'acces au container VPN
-    - UN réseau privé permettant l'acces aux autres containers php postgresql et gui wireguard
+La livraison du code contient deux docker compose: 
 
-### Les containers pour le VPN ###
+- **docker-compose.yml**: Contenant une configuration générique de l'implémentation d'un container wireguard avec un container apache-php et un container posgresql
 
-Pour implémenter la partie vpn nous utiliserons, une image docker de Wireguard.
-ce dernier contient de paramètre à modifier:
-```SERVERURL``` => qui doit contenir soit le nom fqdn publique du serveur hôte soit l'adresse ip publique
-```PEERS``` => contient le nombre de clien à configurer
+- **docker-compose-datakode.yml**: Adaptation du docker-compose fourni pour y intéger le vpn Wireguard.
  
-yaml
-Copier le code
-version: '3.8'
+### Principe de fonctionnement ###
 
-services:
-  wireguard:
-    image: linuxserver/wireguard
-    container_name: wireguard
-    cap_add:
-      - NET_ADMIN
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Paris
-      - SERVERURL=yourserverurl
-      - SERVERPORT=51820
-      - PEERS=1
-      - PEERDNS=auto
-      - INTERNAL_SUBNET=10.13.13.0/24
-    volumes:
-      - ./wireguard/config:/config
-      - ./wireguard/lib/modules:/lib/modules
-    ports:
-      - 51820:51820/udp
-    restart: unless-stopped
-    networks:
-      - internal
+Le principe de fonctionnement est simple, le docker compose va creer 3 containers ayant un réseau commun appelé **wgnet**.
 
-  wireguard-ui:
-    image: cshum/wireguard-ui
-    container_name: wireguard-ui
-    environment:
-      - WGUI_USERNAME=admin
-      - WGUI_PASSWORD=admin
-      - WGUI_ADDRESS=0.0.0.0
-      - WGUI_PORT=5000
-    volumes:
-      - ./wireguard-ui/data:/data
-    restart: unless-stopped
-    depends_on:
-      - wireguard
-    networks:
-      - internal
+Ensuite lors de la creation du container de la solution VPN WIREGUARD, ce dernier disposera d'un acces publique depuis l'adresse ip du serveur hôte (cf variable **SERVERURL** à renseigner dans le docker-compose) ensuite ce dernier va créer un réseau dédié à la connexion VPN (cf variable **INTERNAL_SUBNET** dans le docker-compose)
 
-  postgres:
-    image: postgres:14
-    container_name: postgres
-    environment:
-      POSTGRES_DB: mydatabase
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-    volumes:
-      - ./postgres/data:/var/lib/postgresql/data
-    depends_on:
-      - wireguard
-    networks:
-      - internal
+Il y a ensuite des paramètres de configuration permettant le transfère des flux du réseau interne vpn vers le réseau wgnet des containers docker.
 
-  apache-php:
-    image: php:8.2-apache
-    container_name: apache-php
-    depends_on:
-      - postgres
-    environment:
-      - POSTGRES_DB=mydatabase
-      - POSTGRES_USER=myuser
-      - POSTGRES_PASSWORD=mypassword
-      - POSTGRES_HOST=postgres
-    volumes:
-      - ./www:/var/www/html
-    depends_on:
-      - wireguard  
-    networks:
-      - internal
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+Afin de maitriser le plan ip sur le reseau des containers, il a etait décider de fixer les ips. aussi nous aurons par exemple :
 
-networks:
-  internal:
-    internal: true
-Explications des configurations :
-WireGuard : Conteneur VPN configuré avec l'image linuxserver/wireguard. Il expose le port 51820 en UDP pour les connexions VPN.
-WireGuard-UI : Interface graphique pour WireGuard. Elle est accessible sur le réseau interne et non exposée publiquement.
-PostgreSQL : Conteneur de base de données PostgreSQL 14. Les données sont stockées dans le volume ./postgres/data.
-Apache-PHP : Conteneur Apache avec PHP 8.2. Le code source du site web est monté depuis le répertoire local ./www.
-Réseaux :
-Internal Network : Réseau interne pour permettre aux conteneurs de communiquer entre eux sans être exposés publiquement.
-Instructions supplémentaires :
-Configuration de WireGuard : Assurez-vous que les configurations de WireGuard (fichiers de configuration) sont correctement placées dans le répertoire ./wireguard/config.
-Accès à WireGuard-UI et Apache-PHP : Pour accéder à l'interface graphique de WireGuard et au serveur Apache-PHP, vous devez d'abord vous connecter au VPN WireGuard. Une fois connecté au VPN, vous pouvez accéder à l'interface graphique via http://10.13.13.x:5000 (où 10.13.13.x est l'adresse IP interne assignée par le VPN) et à Apache-PHP via http://10.13.13.x:80.
-Cela garantit que l'accès à l'interface graphique de WireGuard et au serveur Apache-PHP est sécurisé et limité aux utilisateurs connectés via le VPN.
+- ip 10.0.0.2 == Ip du serveur VPN Wireguard sur le reseau docker
+- ip 10.0.0.3 == Ip du serveur Apache-PHP
+- ip 10.0.0.4 == Ip du serveurs Postgresql
+
+### Schémas de fonctionnement ###
+
+
+
+### Connexion au vpn avec un client Wireguard ###
+
+La documentation officielle de Wireguard ci dessous explique comment effectuer la connexion au vpn via les différentes versionde client disponible:
+(documentation_officielle_wireguard)[https://www.wireguard.com/]
+- MacOS
+- Linux
+- Windows
+- IOS
+- Android
