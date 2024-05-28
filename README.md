@@ -23,7 +23,7 @@ Afin de maitriser le plan ip sur le reseau des containers, il a etait décider d
 ### Schémas de fonctionnement ###
 
 
-![Fonctionnement de Wireguard ](extras/wireguard.png) 
+![Fonctionnement de Wireguard](extras/wireguard.png) 
 
 ### Eléments important de paramêtrage du container WireGuard
 
