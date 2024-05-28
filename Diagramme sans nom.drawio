@@ -1,9 +1,87 @@
-<mxfile host="app.diagrams.net" modified="2024-05-28T15:39:55.553Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" version="24.4.9" etag="UMU2SVJvL_W2RCWQi4p9" type="github">
+<mxfile host="app.diagrams.net" modified="2024-05-28T15:53:08.456Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" etag="2rELSGFkWzAkeT-ecDaM" version="24.4.9" type="github">
   <diagram name="Page-1" id="5QQ1zmJ-lo7cxCse1y99">
-    <mxGraphModel>
+    <mxGraphModel dx="1026" dy="585" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="1YY25qMLv9Ye6war4K_D-1" value="" style="sketch=0;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;fillColor=#DF8C42;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;shape=mxgraph.veeam2.wireguard;" vertex="1" parent="1">
+          <mxGeometry x="110" y="230" width="80" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="1YY25qMLv9Ye6war4K_D-2" value="Client se connectant au VPN&amp;nbsp;&lt;div&gt;pour accéder aux ressources php et BDD&lt;/div&gt;" style="image;html=1;image=img/lib/clip_art/people/Worker_Woman_128x128.png" vertex="1" parent="1">
+          <mxGeometry x="110" y="343" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="1YY25qMLv9Ye6war4K_D-3" value="" style="image;html=1;image=img/lib/clip_art/computers/Server_128x128.png" vertex="1" parent="1">
+          <mxGeometry x="608.25" y="70" width="110" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="1YY25qMLv9Ye6war4K_D-4" value="" style="image;aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;spacingTop=3;image=img/lib/active_directory/internet_cloud.svg;" vertex="1" parent="1">
+          <mxGeometry x="290" y="70" width="111.11" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="1YY25qMLv9Ye6war4K_D-6" value="" style="sketch=0;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;fillColor=#DF8C42;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;shape=mxgraph.veeam2.wireguard;" vertex="1" parent="1">
+          <mxGeometry x="623.25" y="220" width="80" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="1YY25qMLv9Ye6war4K_D-8" value="" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.android;fillColor=#5A69A4;gradientColor=none;" vertex="1" parent="1">
+          <mxGeometry x="570" y="380" width="86.5" height="84" as="geometry" />
+        </mxCell>
+        <mxCell id="1YY25qMLv9Ye6war4K_D-9" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/databases/Azure_Database_PostgreSQL_Server.svg;" vertex="1" parent="1">
+          <mxGeometry x="710" y="390" width="52.5" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="1YY25qMLv9Ye6war4K_D-10" value="" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="1YY25qMLv9Ye6war4K_D-1" target="1YY25qMLv9Ye6war4K_D-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="390" y="330" as="sourcePoint" />
+            <mxPoint x="440" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1YY25qMLv9Ye6war4K_D-13" value="Connexion VPN par echange de clé asymétrique" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="1YY25qMLv9Ye6war4K_D-10">
+          <mxGeometry x="-0.1803" y="-3" relative="1" as="geometry">
+            <mxPoint x="-96" y="-51" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1YY25qMLv9Ye6war4K_D-11" value="" style="endArrow=classic;html=1;rounded=0;exitX=1.026;exitY=0.614;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="1YY25qMLv9Ye6war4K_D-4" target="1YY25qMLv9Ye6war4K_D-3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="390" y="330" as="sourcePoint" />
+            <mxPoint x="610" y="240" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1YY25qMLv9Ye6war4K_D-14" value="Ip Publique du serveur hote" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="1YY25qMLv9Ye6war4K_D-11">
+          <mxGeometry x="0.3937" y="1" relative="1" as="geometry">
+            <mxPoint x="-56" y="2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1YY25qMLv9Ye6war4K_D-12" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="1YY25qMLv9Ye6war4K_D-2" target="1YY25qMLv9Ye6war4K_D-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="390" y="330" as="sourcePoint" />
+            <mxPoint x="440" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1YY25qMLv9Ye6war4K_D-16" value="" style="line;strokeWidth=4;html=1;perimeter=backbonePerimeter;points=[];outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="590" y="330" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="1YY25qMLv9Ye6war4K_D-17" value="reseau container commun" style="line;strokeWidth=4;direction=south;html=1;perimeter=backbonePerimeter;points=[];outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="656.5" y="280" width="10" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="1YY25qMLv9Ye6war4K_D-18" value="" style="line;strokeWidth=4;direction=south;html=1;perimeter=backbonePerimeter;points=[];outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="608.25" y="343" width="10" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="1YY25qMLv9Ye6war4K_D-19" value="" style="line;strokeWidth=4;direction=south;html=1;perimeter=backbonePerimeter;points=[];outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="730" y="343" width="10" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="1YY25qMLv9Ye6war4K_D-21" value="" style="endArrow=classic;html=1;rounded=0;exitX=-0.062;exitY=0.917;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="1YY25qMLv9Ye6war4K_D-6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="390" y="330" as="sourcePoint" />
+            <mxPoint x="190" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1YY25qMLv9Ye6war4K_D-22" value="Etablissement de la connexion vpn&amp;nbsp;&lt;div&gt;et attribution d&#39;une adresse ip sur le reseau vpn&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="1YY25qMLv9Ye6war4K_D-21">
+          <mxGeometry x="0.4097" y="-1" relative="1" as="geometry">
+            <mxPoint x="86" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1YY25qMLv9Ye6war4K_D-28" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="1YY25qMLv9Ye6war4K_D-3" target="1YY25qMLv9Ye6war4K_D-6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="560" y="220" as="sourcePoint" />
+            <mxPoint x="440" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
