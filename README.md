@@ -27,9 +27,17 @@ Afin de maitriser le plan ip sur le reseau des containers, il a etait décider d
 ### Connexion au vpn avec un client Wireguard ###
 
 La documentation officielle de Wireguard ci dessous explique comment effectuer la connexion au vpn via les différentes versionde client disponible:
-(documentation_officielle_wireguard)[https://www.wireguard.com/]
+
+!(documentation_officielle_wireguard)[https://www.wireguard.com/]
+
 - MacOS
 - Linux
 - Windows
 - IOS
 - Android
+
+Il y a généralement deux possibilités pour charger la configuration vpn, pour celà il faudra récupérer au niveau du volume du container Wireguard le fichier de configurations correspondant au client que l'on soit configurer, par exemple le client peer_client1, dans le dossier peer_client1 qui se trouve dans le répertoire configs du container Wireguard, il y a deux fichiers :
+
+- Soit un fichier png contenant le QRCODE de la configuration !(Qrcode)[extras/peer_client1.png] (recommandé pour Android et IOS)
+
+- Soit un fichier de configuration à importer dans le client Wireguard !(configuration)[extras/peer_client1.conf] (recommandé pour linux, windows et macOS)
