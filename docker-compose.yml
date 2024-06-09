@@ -17,9 +17,9 @@ services:
       - '.wg-easy:/etc/wireguard'
     environment:
       - WG_DEFAULT_ADDRESS=13.0.0.1x
-      - WG_ALLOWED_IPS=0.0.0.0/0
+      - WG_ALLOWED_IPS=10.0.0.0/8
       - WG_DEFAULT_DNS=8.8.8.8, 8.8.4.4
-      - PASSWORD=12345 # changer_moi
+      - PASSWORD=C1mdp2Wireguard! # changer_moi
       - WG_HOST=192.168.1.100 # changez_moi
       - LANG=fr
       - WG_POST_UP=iptables -A FORWARD -i %i -j ACCEPT && iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
@@ -28,37 +28,10 @@ services:
     networks:
       wgnet:
         ipv4_address: 10.0.0.2
-  # wireguard:
-  #   image: linuxserver/wireguard
-  #   container_name: wireguard
-  #   environment:
-  #     - PUID=1000
-  #     - PGID=1000
-  #     - TZ=Europe/Paris
-  #     - SERVERURL=192.168.1.100
-  #     - SERVERPORT=51820
-  #     - PEERS=client1
-  #     - PEERDNS=auto
-  #     - INTERNAL_SUBNET=10.13.13.0
-  #     - ALLOWEDIPS=0.0.0.0/0
-  #   volumes:
-  #     - ./wireguard/config:/config
-  #     - ./wireguard/lib/modules:/lib/modules
-  #   ports:
-  #     - 51820:51820/udp
-  #   restart: unless-stopped
-  #   sysctls:
-  #     - net.ipv4.conf.all.src_valid_mark=1
-  #     - net.ipv4.ip_forward=1
-  #   cap_add:
-  #     - NET_ADMIN
-  #     - SYS_MODULE
-  #   networks:
-  #     wgnet:
-  #       ipv4_address: 10.0.0.2
 
   postgres:
     image: postgres:14
+    restart: unless-stopped
     container_name: postgres
     environment:
       POSTGRES_DB: mydatabase
@@ -76,6 +49,7 @@ services:
 
   apache-php:
     image: php:8.2-apache
+    restart: unless-stopped
     container_name: apache-php
     depends_on:
       - postgres

@@ -10,9 +10,9 @@ La livraison du code contient deux docker compose:
 
 Le principe de fonctionnement est simple, le docker compose va créer 3 containers ayant un réseau commun appelé **wgnet**.
 
-Ensuite lors de la creation du container de la solution VPN WIREGUARD, ce dernier disposera d'un acces publique depuis l'adresse ip du serveur hôte (cf variable **SERVERURL** à renseigner dans le docker-compose)
+Ensuite lors de la creation du container de la solution VPN WIREGUARD, ce dernier disposera d'un acces publique depuis l'adresse ip du serveur hôte (cf variable **WG_HOST** à renseigner dans le docker-compose)
 
-Puis ce dernier va créer un réseau dédié à la connexion VPN (cf variable **INTERNAL_SUBNET** dans le docker-compose)
+Puis ce dernier va créer un réseau dédié à la connexion VPN (cf variable **WG_DEFAULT_ADDRESS** dans le docker-compose)
 
 La configuration permetra le transfère des flux du réseau dédié vpn vers le réseau dédié des containers docker.
 
@@ -24,7 +24,6 @@ Afin de maitriser le plan ip sur le reseau des containers, il a etait décider d
 
 ### Schémas de fonctionnement ###
 
-
 ![Fonctionnement de Wireguard](extras/wireguard.png) 
 
 ### Eléments important de paramêtrage du container WireGuard
@@ -33,11 +32,10 @@ Ci-dessous les éléments importants à paramétrer dans le docker-compose pour 
 
 -  sur la section environment:
 
-     * SERVERURL : Correspond à l'adresse ip publique où le nom fqdn du serveur hôte
-     * SERVERPORT: Port d'écoute du serveur vpn
-     * PEERS: il s'agit d'une liste des clients du vpn, celà permet la génération de leur configuration
-     * INTERNAL_SUBNET: Il s'agit du subnet réseau dédié au vpn, pour chaque clients et serveur une adresse ip sera attribuée dans ce réseau.
-     * ALLOWEDIPS: Définit les subnets autorisés via le réseau VPN
+     * WG_HOST: Correspond à l'adresse ip publique où le nom fqdn du serveur hôte
+     * WG_DEFAULT_ADDRESS: Il s'agit du subnet réseau dédié au vpn, pour chaque clients et serveur une adresse ip sera attribuée dans ce réseau.
+     * PASSWORD: Il s'agit du mot de passe administrateur de l'interface Web de Wireguard
+     * WG_ALLOWED_IPS: Définit les subnets autorisés via le réseau VPN
 
 - sur la section sysctls:
 
@@ -48,6 +46,15 @@ Ci-dessous les éléments importants à paramétrer dans le docker-compose pour 
     Cette section permet de donner des privilèges au containers docker, sur le serveur hôte.
     * NET_ADMIN : permet de donner des droits d'opération sur des éléments de gestion du réseau, cette directive est nécessaire pour gérer les transferts de flux entre les différents réseaux utilisés
     * SYS_MODULE: permet de gerer des modules kernels
+
+### Interface Web de Wireguard
+
+La solution VPN Wireguard dispose, d'une interface web accessible via l'interface publique du serveur host , http://ip_publique:51821, l'inteface ne prend pas en compte le chiffrement SSL, il faudra pour celà passer par un serveur web nginx ou caddy.
+
+L'interface permet de gérer simplement l'ajout / suppression de nouveau client du vpn, et de récupérer la configuration soit via un fichier de configuration soit via la génération du QRCODE.
+
+![Interface Wireguard ui](extras/wireguard-ui.png) 
+
 
 ### Connexion au vpn avec un client Wireguard ###
 
