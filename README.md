@@ -5,7 +5,7 @@ La livraison du code contient deux docker compose:
 - **docker-compose.yml**: Contenant une configuration générique de l'implémentation d'un container wireguard avec un container apache-php et un container posgresql
 
 - **docker-compose-datakode.yml**: Adaptation du docker-compose fourni pour y intéger le vpn Wireguard.
- 
+
 ### Principe de fonctionnement ###
 
 Le principe de fonctionnement est simple, le docker compose va créer 3 containers ayant un réseau commun appelé **wgnet**.
