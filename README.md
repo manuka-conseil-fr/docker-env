@@ -1,6 +1,6 @@
 # docker compose vpn Wireguard
 
-La livraison du code contient deux docker compose: 
+La livraison du code contient un docker compose: 
 
 - **docker-compose.yml**: Contenant une configuration générique de l'implémentation d'un container wireguard avec un container apache-php et un container posgresql
 
